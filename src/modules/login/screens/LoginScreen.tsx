@@ -5,6 +5,6 @@ const LoginScreen = () => {
     <div>
       <BackgroundImage src="./background.png" />
     </div>
-    )
+  );
 };
 export default LoginScreen;
