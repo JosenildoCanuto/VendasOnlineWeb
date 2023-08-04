@@ -1,4 +1,5 @@
 import { Input } from 'antd';
+import axios from 'axios';
 import { useState } from 'react';
 
 import Button from '../../../shared/buttons/button/button';
@@ -12,19 +13,34 @@ import {
 } from '../styles/loginScreen.styles';
 
 const LoginScreen = () => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleUsername = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setUsername(event.target.value);
+  const handleEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(event.target.value);
   };
 
   const handlePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);
   };
 
-  const handleLogin = (event: React.ChangeEvent<HTMLInputElement>) => {
-    alert(`Usuario: ${username} Senha: ${password}`);
+  const handleLogin = async () => {
+    await axios({
+      method: 'post',
+      url: 'http://localhost:8080/auth',
+      data: {
+        email: email,
+        password: password,
+      },
+    })
+      .then((result) => {
+        alert(`Fez login! ${result.data.accessToken}`);
+        return result.data;
+      })
+
+      .catch(() => {
+        alert(`Usuario ou senha invalido`);
+      });
   };
 
   return (
@@ -39,12 +55,12 @@ const LoginScreen = () => {
           <Input
             placeholder="Usuario"
             style={{ marginTop: '16px' }}
-            onChange={handleUsername}
-            value={username}
+            onChange={handleEmail}
+            value={email}
           />
           <Input
             placeholder="Senha"
-            type='password'
+            type="password"
             style={{ marginTop: '16px' }}
             onChange={handlePassword}
             value={password}
