@@ -1,9 +1,10 @@
 import { Input } from 'antd';
-import axios from 'axios';
 import { useState } from 'react';
 
-import Button from '../../../shared/buttons/button/button';
-import SVGLogo from '../../../shared/icons/SVGLogo';
+import Button from '../../../shared/components/buttons/button/button';
+import SVGLogo from '../../../shared/components/icons/SVGLogo';
+import { useGlobalContext } from '../../../shared/hooks/useGlobalContext';
+import { useRequests } from '../../../shared/hooks/useRequests';
 import {
   BackgroundImage,
   ContainerLogin,
@@ -13,8 +14,10 @@ import {
 } from '../styles/loginScreen.styles';
 
 const LoginScreen = () => {
+  const { accessToken, setAccessToken } = useGlobalContext();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { postRequest, loading } = useRequests();
 
   const handleEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
@@ -24,23 +27,12 @@ const LoginScreen = () => {
     setPassword(event.target.value);
   };
 
-  const handleLogin = async () => {
-    await axios({
-      method: 'post',
-      url: 'http://localhost:8080/auth',
-      data: {
-        email: email,
-        password: password,
-      },
-    })
-      .then((result) => {
-        alert(`Fez login! ${result.data.accessToken}`);
-        return result.data;
-      })
-
-      .catch(() => {
-        alert(`Usuario ou senha invalido`);
-      });
+  const handleLogin = () => {
+    setAccessToken('novo Token');
+    postRequest('http://localhost:8080/auth', {
+      email: email,
+      password: password,
+    });
   };
 
   return (
@@ -50,7 +42,7 @@ const LoginScreen = () => {
         <LimitedContainer>
           <SVGLogo />
           <TitleLogin level={2} type="secondary">
-            LOGIN
+            LOGIN ({accessToken})
           </TitleLogin>
           <Input
             placeholder="Usuario"
@@ -65,7 +57,7 @@ const LoginScreen = () => {
             onChange={handlePassword}
             value={password}
           />
-          <Button type="primary" margin="16px 0px 16px 0px" onClick={handleLogin}>
+          <Button loading={loading} type="primary" margin="16px 0px 16px 0px" onClick={handleLogin}>
             ENTRAR
           </Button>
         </LimitedContainer>
