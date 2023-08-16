@@ -64,9 +64,3 @@ const LoginScreen = () => {
 };
 
 export default LoginScreen;
-// style={{ marginTop: '16px' }}
-//   const  [username, setUsername] = useState('');
-
-// const handleUsername = (event: React.ChangeEvent<HTMLInputElement>) = {
-//   setUsername(event.target.value)
-// }
