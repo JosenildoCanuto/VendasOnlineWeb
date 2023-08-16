@@ -53,7 +53,7 @@ export const useGlobalContext = () => {
   const setUser = (user: UserType) => {
     setGlobalData({
       ...globalData,
-      user
+      user,
     });
   };
 

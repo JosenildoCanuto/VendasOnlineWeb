@@ -3,7 +3,7 @@ import { RouteObject } from 'react-router-dom';
 import Product from './screens/Product';
 
 export enum ProductRoutesEnum {
-  PRODUCT = '/product'
+  PRODUCT = '/product',
 }
 
 export const productScreens: RouteObject[] = [
